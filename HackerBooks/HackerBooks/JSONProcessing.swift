@@ -26,7 +26,7 @@ func decode(book json: JSONDictionary) throws  -> Book{
         throw HackerBooksError.jsonParsingError
     }
     
-    guard let tags = json["authors"] as? String,
+    guard let tags = json["tags"] as? String,
         tagsArray = convertStringToTagsArray(tags) else {
             throw HackerBooksError.jsonParsingError
     }

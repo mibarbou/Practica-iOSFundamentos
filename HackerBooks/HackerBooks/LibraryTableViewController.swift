@@ -24,6 +24,8 @@ class LibraryTableViewController: UITableViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        
+        title = "Hackers Books"
 
         // Uncomment the following line to preserve selection between presentations
         // self.clearsSelectionOnViewWillAppear = false
@@ -40,13 +42,18 @@ class LibraryTableViewController: UITableViewController {
     // MARK: - Table view data source
 
     override func numberOfSectionsInTableView(tableView: UITableView) -> Int {
-        // #warning Incomplete implementation, return the number of sections
-        return 1
+   
+        return model.tagsCount
     }
 
     override func tableView(tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        // #warning Incomplete implementation, return the number of rows
-        return model.books.count
+        
+        guard let books = model.getBooksAtIndex(section) else {
+            
+            return 0
+        }
+        
+        return books.count
     }
 
     override func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
@@ -61,13 +68,19 @@ class LibraryTableViewController: UITableViewController {
                                    reuseIdentifier: cellId)
         }
 
-        let book = model.books[indexPath.row]
+        let book = model.getBookAtIndexPath(indexPath)!
         
         cell?.textLabel?.text = book.title
         
 
         return cell!
     }
+    
+    override func tableView(tableView: UITableView, titleForHeaderInSection section: Int) -> String? {
+        
+        return model.getTagNameAtIndex(section)
+    }
+    
 
     /*
     // Override to support conditional editing of the table view.
