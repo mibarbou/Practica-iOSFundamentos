@@ -17,9 +17,46 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     func application(application: UIApplication, didFinishLaunchingWithOptions launchOptions: [NSObject: AnyObject]?) -> Bool {
         self.window = UIWindow(frame: UIScreen.mainScreen().bounds)
         // Override point for customization after application launch.
-        self.window!.backgroundColor = UIColor.whiteColor()
-        self.window!.makeKeyAndVisible()
-        return true
+        
+        // crear instancia de modelo
+        do{
+            let json  = try loadFrom(remoteURL: "https://t.co/K9ziV0z3SJ")
+            print(json)
+            
+            var tagSet : Set<Tag> = Set<Tag>()
+            
+            var books = [Book]()
+            for dict in json{
+                do{
+                    let book = try decode(book: dict)
+                    books.append(book)
+                    
+                    for tag in book.tags {
+                        
+                        tagSet.insert(tag)
+                    }
+                    
+                }catch{
+                    print("Error al procesar \(dict)")
+                }
+                
+            }
+            
+            let model = Library(books: books, tags: tagSet)
+            
+            let libraryVC = LibraryTableViewController(model: model)
+            let libraryNAV = UINavigationController(rootViewController: libraryVC)
+            
+            window?.rootViewController = libraryNAV
+ 
+            self.window!.backgroundColor = UIColor.whiteColor()
+            self.window!.makeKeyAndVisible()
+            return true
+            
+        }catch{
+            fatalError("Error while loading JSON")
+        }
+        
     }
 
     func applicationWillResignActive(application: UIApplication) {
