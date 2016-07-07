@@ -16,15 +16,17 @@ class Book : Comparable {
     let authors     :   [String]
     let imageURL    :   NSURL
     let pdfURL      :   NSURL
+    let isFavorite  : Bool
     
     
-    init(title: String, tags: [Tag], authors: [String], imageURL: NSURL, pdfURL: NSURL){
+    init(title: String, tags: [Tag], authors: [String], imageURL: NSURL, pdfURL: NSURL, isFavorite: Bool = false){
         
         self.title = title
         self.tags = tags
         self.authors = authors
         self.imageURL = imageURL
         self.pdfURL = pdfURL
+        self.isFavorite = isFavorite
     }
     
     var proxyForComparison : String{

@@ -81,6 +81,18 @@ class LibraryTableViewController: UITableViewController {
         return model.getTagNameAtIndex(section)
     }
     
+    //MARK: Table view delegate
+    
+    override func tableView(tableView: UITableView, didSelectRowAtIndexPath indexPath: NSIndexPath) {
+        
+        let book = model.getBookAtIndexPath(indexPath)!
+        
+        let bookVC = BookViewController(model: book)
+        
+        navigationController?.pushViewController(bookVC, animated: true)
+        
+    }
+    
 
     /*
     // Override to support conditional editing of the table view.
@@ -117,14 +129,5 @@ class LibraryTableViewController: UITableViewController {
     }
     */
 
-    /*
-    // MARK: - Navigation
-
-    // In a storyboard-based application, you will often want to do a little preparation before navigation
-    override func prepareForSegue(segue: UIStoryboardSegue, sender: AnyObject?) {
-        // Get the new view controller using segue.destinationViewController.
-        // Pass the selected object to the new view controller.
-    }
-    */
 
 }

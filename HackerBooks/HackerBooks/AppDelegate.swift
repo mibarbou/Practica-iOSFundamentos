@@ -21,7 +21,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         // crear instancia de modelo
         do{
             let json  = try loadFrom(remoteURL: "https://t.co/K9ziV0z3SJ")
-            print(json)
+//            print(json)
             
             var tagSet : Set<Tag> = Set<Tag>()
             

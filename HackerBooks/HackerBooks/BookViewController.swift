@@ -10,10 +10,33 @@ import UIKit
 
 class BookViewController: UIViewController {
 
+    @IBOutlet weak var titleLabel: UILabel!
+    @IBOutlet weak var authorsLabel: UILabel!
+    @IBOutlet weak var bookImageView: UIImageView!
+    
+    let model: Book
+    
+    init(model: Book){
+        self.model = model
+        
+        super.init(nibName: nil, bundle: nil)
+    }
+    
+    required init?(coder aDecoder: NSCoder) {
+        fatalError("init(coder:) has not been implemented")
+    }
+    
+    
     override func viewDidLoad() {
         super.viewDidLoad()
 
         // Do any additional setup after loading the view.
+    }
+    
+    override func viewWillAppear(animated: Bool) {
+        super.viewWillAppear(animated)
+   
+        syncModelWithView()
     }
 
     override func didReceiveMemoryWarning() {
@@ -22,14 +45,24 @@ class BookViewController: UIViewController {
     }
     
 
-    /*
-    // MARK: - Navigation
-
-    // In a storyboard-based application, you will often want to do a little preparation before navigation
-    override func prepareForSegue(segue: UIStoryboardSegue, sender: AnyObject?) {
-        // Get the new view controller using segue.destinationViewController.
-        // Pass the selected object to the new view controller.
+    func syncModelWithView() {
+        
+        titleLabel.text = model.title
+        authorsLabel.text = model.authors.joinWithSeparator(", ")
+        
+        dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0)) { 
+            
+            let imageData = NSData(contentsOfURL: self.model.imageURL)
+            
+            dispatch_async(dispatch_get_main_queue(), {
+                
+                if let data = imageData {
+                    
+                    self.bookImageView.image = UIImage(data: data)
+                } 
+            })
+        }
+        
     }
-    */
 
 }

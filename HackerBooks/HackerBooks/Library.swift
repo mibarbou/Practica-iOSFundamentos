@@ -93,16 +93,13 @@ class Library {
     
     func getBooksAtIndex(index: Int) -> [Book]? {
         
-        let tagsSet = self.tags
-        var tagsArray = Array(tagsSet)
-        tagsArray.sortInPlace({ $0.name < $1.name })
-        
+        let tagsArray = getOrderedTagsArray()
         
         guard let books = self.booksForTag(tagsArray[index]) else {
             return nil
         }
         
-        return books
+        return getBooksOrderedByTitle(books)
     }
     
     func getBookAtIndexPath(indexPath: NSIndexPath) -> Book? {
@@ -116,11 +113,9 @@ class Library {
     
     func getTagNameAtIndex(index: Int) -> String {
         
-        let tagsSet = self.tags
-        var tagsArray = Array(tagsSet)
-        tagsArray.sortInPlace({ $0.name < $1.name })
+        let tagsArray = getOrderedTagsArray()
  
-        return tagsArray[index].name
+        return (tagsArray[index].name).uppercaseString
     }
     
     //MARK: Utils
@@ -134,6 +129,20 @@ class Library {
         }
    
         return d
+    }
+    
+    func getBooksOrderedByTitle(books: [Book]) -> [Book]{
+        
+        return books.sort({$0.title < $1.title})
+    }
+    
+    func getOrderedTagsArray() -> [Tag]{
+        
+        let tagsSet = self.tags
+        var tagsArray = Array(tagsSet)
+        tagsArray.sortInPlace({ $0.name < $1.name })
+        
+        return tagsArray
     }
     
 }
