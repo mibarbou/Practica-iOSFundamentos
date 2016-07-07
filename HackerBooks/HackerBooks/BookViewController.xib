@@ -25,10 +25,10 @@
                         <constraint firstAttribute="width" constant="240" id="s6Z-hF-xQY"/>
                     </constraints>
                 </imageView>
-                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="aHh-Sg-0A9">
-                    <rect key="frame" x="17" y="67" width="566" height="40"/>
+                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="2" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="aHh-Sg-0A9">
+                    <rect key="frame" x="17" y="67" width="566" height="49"/>
                     <constraints>
-                        <constraint firstAttribute="height" constant="40" id="7tP-en-ZHB"/>
+                        <constraint firstAttribute="height" constant="49" id="7tP-en-ZHB"/>
                     </constraints>
                     <fontDescription key="fontDescription" name="HelveticaNeue-Bold" family="Helvetica Neue" pointSize="19"/>
                     <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
@@ -50,7 +50,7 @@
                 <constraint firstItem="ZuB-Dz-kMV" firstAttribute="centerX" secondItem="i5M-Pr-FkT" secondAttribute="centerX" id="GaZ-d1-dzA"/>
                 <constraint firstAttribute="trailing" secondItem="pnR-Ay-e9K" secondAttribute="trailing" constant="17" id="Jd7-Ps-UL6"/>
                 <constraint firstItem="pnR-Ay-e9K" firstAttribute="top" secondItem="ZuB-Dz-kMV" secondAttribute="bottom" constant="41" id="MZ0-OX-v3u"/>
-                <constraint firstItem="ZuB-Dz-kMV" firstAttribute="top" secondItem="aHh-Sg-0A9" secondAttribute="bottom" constant="23" id="P2D-1Q-1cQ"/>
+                <constraint firstItem="ZuB-Dz-kMV" firstAttribute="top" secondItem="aHh-Sg-0A9" secondAttribute="bottom" constant="14" id="P2D-1Q-1cQ"/>
                 <constraint firstAttribute="bottom" secondItem="pnR-Ay-e9K" secondAttribute="bottom" constant="111" id="ZcZ-Gu-rIZ"/>
                 <constraint firstItem="aHh-Sg-0A9" firstAttribute="top" secondItem="i5M-Pr-FkT" secondAttribute="top" constant="67" id="aZb-LE-dLv"/>
                 <constraint firstItem="aHh-Sg-0A9" firstAttribute="leading" secondItem="i5M-Pr-FkT" secondAttribute="leading" constant="17" id="dzY-ry-l70"/>

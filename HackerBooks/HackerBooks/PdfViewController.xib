@@ -7,6 +7,8 @@
     <objects>
         <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner" customClass="PdfViewController" customModule="HackerBooks" customModuleProvider="target">
             <connections>
+                <outlet property="activityIndicator" destination="J8E-YV-jhd" id="Pyx-4P-fze"/>
+                <outlet property="pdfView" destination="g5n-jG-nLc" id="6j6-Uu-4vG"/>
                 <outlet property="view" destination="i5M-Pr-FkT" id="sfx-zR-JGt"/>
             </connections>
         </placeholder>
@@ -14,7 +16,25 @@
         <view clearsContextBeforeDrawing="NO" contentMode="scaleToFill" id="i5M-Pr-FkT">
             <rect key="frame" x="0.0" y="0.0" width="600" height="600"/>
             <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+            <subviews>
+                <webView contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="g5n-jG-nLc">
+                    <rect key="frame" x="0.0" y="0.0" width="600" height="600"/>
+                    <color key="backgroundColor" red="0.36078431370000003" green="0.38823529410000002" blue="0.4039215686" alpha="1" colorSpace="deviceRGB"/>
+                </webView>
+                <activityIndicatorView hidden="YES" opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" hidesWhenStopped="YES" style="whiteLarge" translatesAutoresizingMaskIntoConstraints="NO" id="J8E-YV-jhd">
+                    <rect key="frame" x="282" y="281" width="37" height="37"/>
+                    <color key="color" white="0.33333333333333331" alpha="1" colorSpace="calibratedWhite"/>
+                </activityIndicatorView>
+            </subviews>
             <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
+            <constraints>
+                <constraint firstAttribute="trailing" secondItem="g5n-jG-nLc" secondAttribute="trailing" id="5IB-l6-IWN"/>
+                <constraint firstItem="J8E-YV-jhd" firstAttribute="centerY" secondItem="i5M-Pr-FkT" secondAttribute="centerY" id="GMB-ku-beQ"/>
+                <constraint firstItem="J8E-YV-jhd" firstAttribute="centerX" secondItem="i5M-Pr-FkT" secondAttribute="centerX" id="IbJ-Og-73Y"/>
+                <constraint firstItem="g5n-jG-nLc" firstAttribute="top" secondItem="i5M-Pr-FkT" secondAttribute="top" id="U8g-wl-S5k"/>
+                <constraint firstAttribute="bottom" secondItem="g5n-jG-nLc" secondAttribute="bottom" id="dVi-bA-zni"/>
+                <constraint firstItem="g5n-jG-nLc" firstAttribute="leading" secondItem="i5M-Pr-FkT" secondAttribute="leading" id="fdW-61-aAQ"/>
+            </constraints>
         </view>
     </objects>
 </document>

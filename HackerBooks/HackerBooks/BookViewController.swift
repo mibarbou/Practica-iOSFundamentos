@@ -31,6 +31,9 @@ class BookViewController: UIViewController {
         super.viewDidLoad()
 
         // Do any additional setup after loading the view.
+        
+        let pdfButton = UIBarButtonItem(title: "Ver PDF", style: .Done, target: self, action: #selector(BookViewController.goToPdfView))
+        navigationItem.rightBarButtonItem = pdfButton
     }
     
     override func viewWillAppear(animated: Bool) {
@@ -42,6 +45,13 @@ class BookViewController: UIViewController {
     override func didReceiveMemoryWarning() {
         super.didReceiveMemoryWarning()
         // Dispose of any resources that can be recreated.
+    }
+    
+    func goToPdfView() {
+        
+        let pdfVC = PdfViewController(model: self.model)
+        navigationController?.pushViewController(pdfVC, animated: true)
+        
     }
     
 
