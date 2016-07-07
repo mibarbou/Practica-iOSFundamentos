@@ -8,13 +8,13 @@
 
 import UIKit
 
-class BookViewController: UIViewController {
+class BookViewController: UIViewController, LibraryViewControllerDelegate{
 
     @IBOutlet weak var titleLabel: UILabel!
     @IBOutlet weak var authorsLabel: UILabel!
     @IBOutlet weak var bookImageView: UIImageView!
     
-    let model: Book
+    var model: Book
     
     init(model: Book){
         self.model = model
@@ -32,6 +32,8 @@ class BookViewController: UIViewController {
 
         // Do any additional setup after loading the view.
         
+        syncModelWithView()
+        
         let pdfButton = UIBarButtonItem(title: "Ver PDF", style: .Done, target: self, action: #selector(BookViewController.goToPdfView))
         navigationItem.rightBarButtonItem = pdfButton
     }
@@ -39,7 +41,11 @@ class BookViewController: UIViewController {
     override func viewWillAppear(animated: Bool) {
         super.viewWillAppear(animated)
    
-        syncModelWithView()
+    }
+    
+    override func viewDidAppear(animated: Bool) {
+        super.viewDidAppear(animated)
+        
     }
 
     override func didReceiveMemoryWarning() {
@@ -60,6 +66,8 @@ class BookViewController: UIViewController {
         titleLabel.text = model.title
         authorsLabel.text = model.authors.joinWithSeparator(", ")
         
+        bookImageView.image = UIImage()
+        
         dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0)) { 
             
             let imageData = NSData(contentsOfURL: self.model.imageURL)
@@ -74,5 +82,37 @@ class BookViewController: UIViewController {
         }
         
     }
+    
+    func libraryViewController(vc: LibraryTableViewController, didSelectCharacter book: Book) {
+        
+        
+        model = book
+        
+        syncModelWithView()
+    }
 
 }
+
+
+//extension BookViewController: LibraryViewControllerDelegate{
+//    
+//    func libraryViewController(vc: LibraryTableViewController, didSelectCharacter book: Book) {
+//        
+//        
+//        model = book
+//        
+//        syncModelWithView()
+//    }
+//}
+
+
+
+
+
+
+
+
+
+
+
+

@@ -47,7 +47,18 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
             let libraryVC = LibraryTableViewController(model: model)
             let libraryNAV = UINavigationController(rootViewController: libraryVC)
             
-            window?.rootViewController = libraryNAV
+            let bookVC = BookViewController(model: model.getBookAtIndexPath(NSIndexPath(forRow: 0, inSection: 0))!)
+            let bookNAV = UINavigationController(rootViewController: bookVC)
+            
+            let splitVC = UISplitViewController()
+            splitVC.viewControllers = [libraryNAV, bookNAV]
+            splitVC.delegate = libraryVC
+            libraryVC.delegate = bookVC
+            
+            splitVC.preferredDisplayMode = .Automatic
+            
+            
+            window?.rootViewController = splitVC
  
             self.window!.backgroundColor = UIColor.whiteColor()
             self.window!.makeKeyAndVisible()

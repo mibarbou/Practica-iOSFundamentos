@@ -8,9 +8,12 @@
 
 import UIKit
 
-class LibraryTableViewController: UITableViewController {
+class LibraryTableViewController: UITableViewController, UISplitViewControllerDelegate {
     
     let model: Library
+    
+    
+    weak var delegate : LibraryViewControllerDelegate?
     
     init(model: Library){
         self.model = model
@@ -87,47 +90,51 @@ class LibraryTableViewController: UITableViewController {
         
         let book = model.getBookAtIndexPath(indexPath)!
         
-        let bookVC = BookViewController(model: book)
+        delegate?.libraryViewController(self, didSelectCharacter: book)
         
-        navigationController?.pushViewController(bookVC, animated: true)
+        
+        if let bookVC = self.delegate as? BookViewController {
+            
+            splitViewController?.showDetailViewController(bookVC, sender: nil)
+            
+//            if let bookNAV = bookVC.navigationController {
+//                
+//                splitViewController?.showDetailViewController(bookNAV, sender: nil)
+//            }
+//            
+        }
+        
+//        let bookVC = BookViewController(model: book)
+//        
+//        navigationController?.pushViewController(bookVC, animated: true)
         
     }
     
-
-    /*
-    // Override to support conditional editing of the table view.
-    override func tableView(tableView: UITableView, canEditRowAtIndexPath indexPath: NSIndexPath) -> Bool {
-        // Return false if you do not want the specified item to be editable.
+    func splitViewController(splitViewController: UISplitViewController, collapseSecondaryViewController secondaryViewController: UIViewController, ontoPrimaryViewController primaryViewController: UIViewController) -> Bool {
+        
         return true
     }
-    */
-
-    /*
-    // Override to support editing the table view.
-    override func tableView(tableView: UITableView, commitEditingStyle editingStyle: UITableViewCellEditingStyle, forRowAtIndexPath indexPath: NSIndexPath) {
-        if editingStyle == .Delete {
-            // Delete the row from the data source
-            tableView.deleteRowsAtIndexPaths([indexPath], withRowAnimation: .Fade)
-        } else if editingStyle == .Insert {
-            // Create a new instance of the appropriate class, insert it into the array, and add a new row to the table view
-        }    
-    }
-    */
-
-    /*
-    // Override to support rearranging the table view.
-    override func tableView(tableView: UITableView, moveRowAtIndexPath fromIndexPath: NSIndexPath, toIndexPath: NSIndexPath) {
-
-    }
-    */
-
-    /*
-    // Override to support conditional rearranging of the table view.
-    override func tableView(tableView: UITableView, canMoveRowAtIndexPath indexPath: NSIndexPath) -> Bool {
-        // Return false if you do not want the item to be re-orderable.
-        return true
-    }
-    */
-
 
 }
+
+
+protocol LibraryViewControllerDelegate: class {
+    
+    func libraryViewController(vc : LibraryTableViewController, didSelectCharacter book: Book)
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

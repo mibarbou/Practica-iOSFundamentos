@@ -56,7 +56,7 @@ func decode(book json: JSONDictionary?) throws -> Book{
 }
 
 //MARK: - Loading
-func loadFrom(remoteURL url : String, bundle: NSBundle = NSBundle.mainBundle()) throws -> JSONArray {
+func loadFrom(remoteURL url : String) throws -> JSONArray {
     guard let url = NSURL(string: url),
         data = NSData(contentsOfURL: url) else {
             throw HackerBooksError.jsonParsingError
