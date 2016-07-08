@@ -40,11 +40,17 @@ class BookViewController: UIViewController, LibraryViewControllerDelegate{
     
     override func viewWillAppear(animated: Bool) {
         super.viewWillAppear(animated)
+        
+        let nc = NSNotificationCenter.defaultCenter()
+        nc.addObserver(self, selector: #selector(imageDidDownload), name: ImageDidDownloadNotification, object: nil)
    
     }
     
-    override func viewDidAppear(animated: Bool) {
-        super.viewDidAppear(animated)
+    override func viewWillDisappear(animated: Bool) {
+        super.viewWillDisappear(animated)
+        
+        let nc = NSNotificationCenter.defaultCenter()
+        nc.removeObserver(self)
         
     }
 
@@ -52,6 +58,18 @@ class BookViewController: UIViewController, LibraryViewControllerDelegate{
         super.didReceiveMemoryWarning()
         // Dispose of any resources that can be recreated.
     }
+    
+    func imageDidDownload(notification: NSNotification)  {
+
+        let info = notification.userInfo!
+    
+        let downloadedImage = info[imageKey] as? UIImage
+        
+       
+        bookImageView.image = downloadedImage
+        
+    }
+    
     
     func goToPdfView() {
         
@@ -66,20 +84,20 @@ class BookViewController: UIViewController, LibraryViewControllerDelegate{
         titleLabel.text = model.title
         authorsLabel.text = model.authors.joinWithSeparator(", ")
         
-        bookImageView.image = UIImage()
+        bookImageView.image = AsyncImage(url: model.imageURL).image
         
-        dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0)) { 
-            
-            let imageData = NSData(contentsOfURL: self.model.imageURL)
-            
-            dispatch_async(dispatch_get_main_queue(), {
-                
-                if let data = imageData {
-                    
-                    self.bookImageView.image = UIImage(data: data)
-                } 
-            })
-        }
+//        dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0)) { 
+//            
+//            let imageData = NSData(contentsOfURL: self.model.imageURL)
+//            
+//            dispatch_async(dispatch_get_main_queue(), {
+//                
+//                if let data = imageData {
+//                    
+//                    self.bookImageView.image = UIImage(data: data)
+//                } 
+//            })
+//        }
         
     }
     

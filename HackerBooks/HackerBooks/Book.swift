@@ -16,7 +16,7 @@ class Book : Comparable {
     let authors     :   [String]
     let imageURL    :   NSURL
     let pdfURL      :   NSURL
-    let isFavorite  : Bool
+    let isFavorite  :   Bool
     
     
     init(title: String, tags: [Tag], authors: [String], imageURL: NSURL, pdfURL: NSURL, isFavorite: Bool = false){

@@ -9,7 +9,7 @@
 import Foundation
 
 typealias BooksArray = [Book]
-typealias LibraryDictionary = [String : Set<Book>]
+typealias LibraryDictionary = [Tag : Set<Book>]
 
 class Library {
     
@@ -45,7 +45,7 @@ class Library {
             
                 if (tags.contains(tag)){
                     
-                    dict[tag.name]?.insert(book)
+                    dict[tag]?.insert(book)
                 }
             }
         }
@@ -56,7 +56,7 @@ class Library {
     func bookCountForTag(tag: Tag?) -> Int {
         
         guard let theTag = tag,
-            count = dict[theTag.name]?.count else {
+            count = dict[theTag]?.count else {
             return 0
         }
 
@@ -65,7 +65,7 @@ class Library {
     
     func booksForTag(tag: Tag) -> [Book]? {
         
-        guard let booksSet = dict[tag.name] else {
+        guard let booksSet = dict[tag] else {
             return nil
         }
         
@@ -125,7 +125,7 @@ class Library {
         
         for t in self.tags {
             
-            d[t.name] = Set<Book>()
+            d[t] = Set<Book>()
         }
    
         return d
