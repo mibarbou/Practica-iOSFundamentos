@@ -29,7 +29,6 @@ class AsyncImage {
     init(url: NSURL) {
         
         self.url = url
-        //self.image = UIImage(named: "BookPlaceHolder")!
         
         imageFor(url: self.url)
         
