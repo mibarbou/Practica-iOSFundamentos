@@ -36,10 +36,32 @@ class LibraryTableViewController: UITableViewController, UISplitViewControllerDe
         // Uncomment the following line to display an Edit button in the navigation bar for this view controller.
         // self.navigationItem.rightBarButtonItem = self.editButtonItem()
     }
+    
+    override func viewWillAppear(animated: Bool) {
+        super.viewWillAppear(animated)
+        
+        let nc = NSNotificationCenter.defaultCenter()
+        nc.addObserver(self, selector: #selector(imageDidDownload), name: ImageDidDownloadNotification, object: nil)
+        
+    }
+    
+    override func viewWillDisappear(animated: Bool) {
+        super.viewWillDisappear(animated)
+        
+        let nc = NSNotificationCenter.defaultCenter()
+        nc.removeObserver(self)
+        
+    }
 
     override func didReceiveMemoryWarning() {
         super.didReceiveMemoryWarning()
         // Dispose of any resources that can be recreated.
+    }
+    
+    func imageDidDownload(notification: NSNotification)  {
+        
+        tableView.reloadData()
+        
     }
 
     // MARK: - Table view data source
@@ -74,7 +96,7 @@ class LibraryTableViewController: UITableViewController, UISplitViewControllerDe
         let book = model.getBookAtIndexPath(indexPath)!
         
         cell?.textLabel?.text = book.title
-//        cell?.imageView?.image = AsyncImage(url: book.imageURL).image
+        cell?.imageView?.image = AsyncImage(url: book.imageURL).image
         cell?.detailTextLabel?.text = book.authors.joinWithSeparator(", ")
 
         return cell!

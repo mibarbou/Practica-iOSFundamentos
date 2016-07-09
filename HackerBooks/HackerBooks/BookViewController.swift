@@ -66,14 +66,8 @@ class BookViewController: UIViewController, LibraryViewControllerDelegate{
     
     func imageDidDownload(notification: NSNotification)  {
 
-//        let info = notification.userInfo!
-//    
-//        let downloadedImage = info[imageKey] as? UIImage
-//        
-//       
-//        bookImageView.image = downloadedImage
-
-        bookImageView.image = AsyncImage(url: model.imageURL).image
+        syncModelWithView()
+        
     }
     
     

@@ -10,7 +10,6 @@ import Foundation
 import UIKit
 
 let ImageDidDownloadNotification = "Image did change"
-let imageKey = "imageKey"
 
 class AsyncImage {
 
@@ -20,8 +19,8 @@ class AsyncImage {
         
         didSet{
       
-            let notif = NSNotificationCenter.defaultCenter()
-            notif.postNotificationName(ImageDidDownloadNotification, object: self, userInfo: [imageKey: image])
+//            let notif = NSNotificationCenter.defaultCenter()
+//            notif.postNotificationName(ImageDidDownloadNotification, object: self, userInfo: [imageKey: image])
             
         }
     }
@@ -88,6 +87,9 @@ class AsyncImage {
                 let localImageUrl = self.imagePathFor(url)
                     
                 data.writeToURL(localImageUrl, atomically: true)
+                
+                let notif = NSNotificationCenter.defaultCenter()
+                notif.postNotificationName(ImageDidDownloadNotification, object: self, userInfo: nil)
       
             })
  
