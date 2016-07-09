@@ -105,7 +105,6 @@ class AsyncImage {
         let urlString =  url.absoluteString as NSString
         
         let imageName = urlString.componentsSeparatedByString("/").last!
-
         
         let filePath = docsPath.URLByAppendingPathComponent(imageName)
         

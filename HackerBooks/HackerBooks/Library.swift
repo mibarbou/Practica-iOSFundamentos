@@ -34,6 +34,9 @@ class Library {
     
     init(books: [Book], tags: Set<Tag>){
         
+        _ = NSNotificationCenter.defaultCenter()
+//        nc.addObserver(self, selector: #selector(imageDidDownload), name: BookFavoriteDidChangenotification, object: nil)
+        
         self.books = books
         self.tags = tags
         
@@ -46,6 +49,11 @@ class Library {
                 if (tags.contains(tag)){
                     
                     dict[tag]?.insert(book)
+                }
+                
+                if book.isFavorite {
+                    let favoriteTag = Tag(name: "favorites")
+                    dict[favoriteTag]?.insert(book)
                 }
             }
         }
@@ -114,6 +122,10 @@ class Library {
     func getTagNameAtIndex(index: Int) -> String {
         
         let tagsArray = getOrderedTagsArray()
+        
+        if tagsArray[index].name == "favorites" && bookCountForTag(Tag(name: "favorites")) == 0 {
+            return ""
+        }
  
         return (tagsArray[index].name).uppercaseString
     }
@@ -142,7 +154,17 @@ class Library {
         var tagsArray = Array(tagsSet)
         tagsArray.sortInPlace({ $0.name < $1.name })
         
-        return tagsArray
+        var finalArray = [Tag]()
+        for t in tagsArray{
+            
+            if t.name == "favorites" {
+                finalArray.insert(t, atIndex: 0)
+            } else {
+                finalArray.append(t)
+            }
+        }
+        
+        return finalArray
     }
     
 }

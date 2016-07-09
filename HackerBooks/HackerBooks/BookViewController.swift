@@ -8,6 +8,8 @@
 
 import UIKit
 
+let keyFavorites = "key favorites user defaults"
+
 class BookViewController: UIViewController, LibraryViewControllerDelegate{
 
     @IBOutlet weak var titleLabel: UILabel!
@@ -34,8 +36,11 @@ class BookViewController: UIViewController, LibraryViewControllerDelegate{
         
         syncModelWithView()
         
-        let pdfButton = UIBarButtonItem(title: "Ver PDF", style: .Done, target: self, action: #selector(BookViewController.goToPdfView))
-        navigationItem.rightBarButtonItem = pdfButton
+        let pdfButton = UIBarButtonItem(title: "PDF", style: .Done, target: self, action: #selector(BookViewController.goToPdfView))
+        
+        let favoriteButton = UIBarButtonItem(title: "Favorito", style: .Done, target: self, action: #selector(BookViewController.goToPdfView))
+        
+        navigationItem.rightBarButtonItems = [pdfButton, favoriteButton]
     }
     
     override func viewWillAppear(animated: Bool) {
@@ -61,13 +66,14 @@ class BookViewController: UIViewController, LibraryViewControllerDelegate{
     
     func imageDidDownload(notification: NSNotification)  {
 
-        let info = notification.userInfo!
-    
-        let downloadedImage = info[imageKey] as? UIImage
-        
-       
-        bookImageView.image = downloadedImage
-        
+//        let info = notification.userInfo!
+//    
+//        let downloadedImage = info[imageKey] as? UIImage
+//        
+//       
+//        bookImageView.image = downloadedImage
+
+        bookImageView.image = AsyncImage(url: model.imageURL).image
     }
     
     
@@ -76,6 +82,27 @@ class BookViewController: UIViewController, LibraryViewControllerDelegate{
         let pdfVC = PdfViewController(model: self.model)
         navigationController?.pushViewController(pdfVC, animated: true)
         
+    }
+    
+    func markBookAsFavorite() {
+        
+        let defaults = NSUserDefaults.standardUserDefaults()
+        
+        let favoritesArray : NSMutableArray
+        if let favorites = defaults.objectForKey(keyFavorites) as? NSArray {
+            
+            favoritesArray = favorites.mutableCopy() as! NSMutableArray
+            
+        } else {
+            
+            favoritesArray = NSMutableArray()
+        }
+
+        if model.isFavorite {
+            model.isFavorite = false
+        } else {
+            model.isFavorite = true
+        }
     }
     
 

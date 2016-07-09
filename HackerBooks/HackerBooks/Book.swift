@@ -8,6 +8,7 @@
 
 import Foundation
 
+let BookFavoriteDidChangenotification = "book favorite property did change"
 
 class Book : Comparable {
     
@@ -16,7 +17,18 @@ class Book : Comparable {
     let authors     :   [String]
     let imageURL    :   NSURL
     let pdfURL      :   NSURL
-    let isFavorite  :   Bool
+    
+    
+    
+    var isFavorite  :  Bool {
+    
+        didSet{
+        
+            let notif = NSNotificationCenter.defaultCenter()
+            notif.postNotificationName(BookFavoriteDidChangenotification, object: self, userInfo: nil)
+            
+        }
+    }
     
     
     init(title: String, tags: [Tag], authors: [String], imageURL: NSURL, pdfURL: NSURL, isFavorite: Bool = false){
@@ -26,7 +38,7 @@ class Book : Comparable {
         self.authors = authors
         self.imageURL = imageURL
         self.pdfURL = pdfURL
-        self.isFavorite = isFavorite
+        self.isFavorite = false
     }
     
     var proxyForComparison : String{

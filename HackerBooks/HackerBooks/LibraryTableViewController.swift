@@ -74,7 +74,7 @@ class LibraryTableViewController: UITableViewController, UISplitViewControllerDe
         let book = model.getBookAtIndexPath(indexPath)!
         
         cell?.textLabel?.text = book.title
-        cell?.imageView?.image = AsyncImage(url: book.imageURL).image
+//        cell?.imageView?.image = AsyncImage(url: book.imageURL).image
         cell?.detailTextLabel?.text = book.authors.joinWithSeparator(", ")
 
         return cell!

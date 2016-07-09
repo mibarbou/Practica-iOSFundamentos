@@ -36,18 +36,24 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
                         tagSet.insert(tag)
                     }
                     
+                    let favoriteTag = Tag(name: "favorites")
+                    tagSet.insert(favoriteTag)
+
+                    
                 }catch{
                     print("Error al procesar \(dict)")
                 }
                 
             }
             
+            
+            
             let model = Library(books: books, tags: tagSet)
             
             let libraryVC = LibraryTableViewController(model: model)
             let libraryNAV = UINavigationController(rootViewController: libraryVC)
             
-            let bookVC = BookViewController(model: model.getBookAtIndexPath(NSIndexPath(forRow: 0, inSection: 0))!)
+            let bookVC = BookViewController(model: model.getBookAtIndexPath(NSIndexPath(forRow: 0, inSection: 1))!)
             let bookNAV = UINavigationController(rootViewController: bookVC)
             
             let splitVC = UISplitViewController()
