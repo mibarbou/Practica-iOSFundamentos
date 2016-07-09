@@ -107,19 +107,6 @@ class BookViewController: UIViewController, LibraryViewControllerDelegate{
         
         bookImageView.image = AsyncImage(url: model.imageURL).image
         
-//        dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0)) { 
-//            
-//            let imageData = NSData(contentsOfURL: self.model.imageURL)
-//            
-//            dispatch_async(dispatch_get_main_queue(), {
-//                
-//                if let data = imageData {
-//                    
-//                    self.bookImageView.image = UIImage(data: data)
-//                } 
-//            })
-//        }
-        
     }
     
     func libraryViewController(vc: LibraryTableViewController, didSelectCharacter book: Book) {
@@ -132,17 +119,6 @@ class BookViewController: UIViewController, LibraryViewControllerDelegate{
 
 }
 
-
-//extension BookViewController: LibraryViewControllerDelegate{
-//    
-//    func libraryViewController(vc: LibraryTableViewController, didSelectCharacter book: Book) {
-//        
-//        
-//        model = book
-//        
-//        syncModelWithView()
-//    }
-//}
 
 
 

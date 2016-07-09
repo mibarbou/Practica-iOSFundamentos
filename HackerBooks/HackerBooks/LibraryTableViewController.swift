@@ -118,13 +118,13 @@ class LibraryTableViewController: UITableViewController, UISplitViewControllerDe
         
         if let bookVC = self.delegate as? BookViewController {
             
-            splitViewController?.showDetailViewController(bookVC, sender: nil)
+//            splitViewController?.showDetailViewController(bookVC, sender: nil)
             
-//            if let bookNAV = bookVC.navigationController {
-//                
-//                splitViewController?.showDetailViewController(bookNAV, sender: nil)
-//            }
-//            
+            if let bookNAV = bookVC.navigationController {
+                
+                splitViewController?.showDetailViewController(bookNAV, sender: nil)
+            }
+            
         }
         
 //        let bookVC = BookViewController(model: book)
