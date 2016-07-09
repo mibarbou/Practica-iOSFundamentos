@@ -35,11 +35,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
                         
                         tagSet.insert(tag)
                     }
-                    
-                    let favoriteTag = Tag(name: "favorites")
-                    tagSet.insert(favoriteTag)
 
-                    
                 }catch{
                     print("Error al procesar \(dict)")
                 }

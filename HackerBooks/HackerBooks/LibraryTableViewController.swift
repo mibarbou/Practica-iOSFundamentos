@@ -41,7 +41,10 @@ class LibraryTableViewController: UITableViewController, UISplitViewControllerDe
         super.viewWillAppear(animated)
         
         let nc = NSNotificationCenter.defaultCenter()
-        nc.addObserver(self, selector: #selector(imageDidDownload), name: ImageDidDownloadNotification, object: nil)
+        nc.addObserver(self, selector: #selector(reloadTable), name: ImageDidDownloadNotification, object: nil)
+        nc.addObserver(self, selector: #selector(reloadTable), name: LibraryDidChangeNotification, object: nil)
+        
+       
         
     }
     
@@ -58,7 +61,7 @@ class LibraryTableViewController: UITableViewController, UISplitViewControllerDe
         // Dispose of any resources that can be recreated.
     }
     
-    func imageDidDownload(notification: NSNotification)  {
+    func reloadTable(notification: NSNotification)  {
         
         tableView.reloadData()
         

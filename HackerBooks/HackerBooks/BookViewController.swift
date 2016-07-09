@@ -38,7 +38,7 @@ class BookViewController: UIViewController, LibraryViewControllerDelegate{
         
         let pdfButton = UIBarButtonItem(title: "PDF", style: .Done, target: self, action: #selector(BookViewController.goToPdfView))
         
-        let favoriteButton = UIBarButtonItem(title: "Favorito", style: .Done, target: self, action: #selector(BookViewController.goToPdfView))
+        let favoriteButton = UIBarButtonItem(title: "Favorito", style: .Done, target: self, action: #selector(BookViewController.markBookAsFavorite))
         
         navigationItem.rightBarButtonItems = [pdfButton, favoriteButton]
     }
@@ -80,17 +80,17 @@ class BookViewController: UIViewController, LibraryViewControllerDelegate{
     
     func markBookAsFavorite() {
         
-        let defaults = NSUserDefaults.standardUserDefaults()
-        
-        let favoritesArray : NSMutableArray
-        if let favorites = defaults.objectForKey(keyFavorites) as? NSArray {
-            
-            favoritesArray = favorites.mutableCopy() as! NSMutableArray
-            
-        } else {
-            
-            favoritesArray = NSMutableArray()
-        }
+//        let defaults = NSUserDefaults.standardUserDefaults()
+//        
+//        let favoritesArray : NSMutableArray
+//        if let favorites = defaults.objectForKey(keyFavorites) as? NSArray {
+//            
+//            favoritesArray = favorites.mutableCopy() as! NSMutableArray
+//            
+//        } else {
+//            
+//            favoritesArray = NSMutableArray()
+//        }
 
         if model.isFavorite {
             model.isFavorite = false

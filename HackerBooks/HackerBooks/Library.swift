@@ -8,6 +8,8 @@
 
 import Foundation
 
+let LibraryDidChangeNotification = "Library model did change"
+
 typealias BooksArray = [Book]
 typealias LibraryDictionary = [Tag : Set<Book>]
 
@@ -34,30 +36,26 @@ class Library {
     
     init(books: [Book], tags: Set<Tag>){
         
-        _ = NSNotificationCenter.defaultCenter()
-//        nc.addObserver(self, selector: #selector(imageDidDownload), name: BookFavoriteDidChangenotification, object: nil)
-        
         self.books = books
         self.tags = tags
         
-        dict = makeEmptyTagsDictionary()
+        putBooksByTags()
         
-        for book in books {
-            
-            for tag in book.tags {
-            
-                if (tags.contains(tag)){
-                    
-                    dict[tag]?.insert(book)
-                }
-                
-                if book.isFavorite {
-                    let favoriteTag = Tag(name: "favorites")
-                    dict[favoriteTag]?.insert(book)
-                }
-            }
-        }
+        let notif = NSNotificationCenter.defaultCenter()
+        notif.addObserver(self, selector: #selector(updateModel), name: BookFavoriteDidChangenotification, object: nil)
+     
+    }
+    
+    deinit{
         
+        NSNotificationCenter.defaultCenter().removeObserver(self)
+    }
+    
+    @objc func updateModel(){
+    
+        putBooksByTags()
+        
+        NSNotificationCenter.defaultCenter().postNotificationName(LibraryDidChangeNotification, object: self, userInfo: nil)
     }
     
     
@@ -141,6 +139,30 @@ class Library {
         }
    
         return d
+    }
+    
+    func putBooksByTags(){
+        
+        dict = makeEmptyTagsDictionary()
+        
+        let favoriteTag = Tag(name: "favorites")
+        tags.insert(favoriteTag)
+        
+        for book in books {
+            
+            if book.isFavorite {
+                
+                dict[favoriteTag]?.insert(book)
+            }
+            
+            for tag in book.tags {
+                
+                if (tags.contains(tag)){
+                    
+                    dict[tag]?.insert(book)
+                }
+            }
+        }
     }
     
     func getBooksOrderedByTitle(books: [Book]) -> [Book]{
