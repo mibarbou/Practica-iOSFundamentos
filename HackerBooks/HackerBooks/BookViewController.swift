@@ -97,9 +97,9 @@ class BookViewController: UIViewController, LibraryViewControllerDelegate{
             
             if !model.isFavorite {
                 
-                for i in 0...favoritesArray.count{
+                for i in 0..<favoritesArray.count{
                     
-                    if favoriteID == favoritesArray.objectAtIndex(i) as! String {
+                    if favoriteID == favoritesArray.objectAtIndex(i) as? String {
                         
                         favoritesArray.removeObjectAtIndex(i)
                     }
