@@ -30,6 +30,8 @@ class LibraryTableViewController: UITableViewController, UISplitViewControllerDe
         
         title = "Hackers Books"
 
+        getSavedData()
+
         // Uncomment the following line to preserve selection between presentations
         // self.clearsSelectionOnViewWillAppear = false
 
@@ -43,9 +45,30 @@ class LibraryTableViewController: UITableViewController, UISplitViewControllerDe
         let nc = NSNotificationCenter.defaultCenter()
         nc.addObserver(self, selector: #selector(reloadTable), name: ImageDidDownloadNotification, object: nil)
         nc.addObserver(self, selector: #selector(reloadTable), name: LibraryDidChangeNotification, object: nil)
+  
+    }
+    
+    func getSavedData() {
         
-       
+        let defaults = NSUserDefaults.standardUserDefaults()
         
+        if let favoritesArray = defaults.objectForKey(keyFavorites) as! NSArray! {
+            
+            for book in model.books {
+                
+                for id in favoritesArray {
+                    
+                    let bookID = String(book.pdfURL).componentsSeparatedByString("/").last!
+                    
+                    if bookID == id as! String {
+                        
+                        book.isFavorite = true
+                    }
+                }
+            }
+        }
+        
+        tableView.reloadData()
     }
     
     override func viewWillDisappear(animated: Bool) {

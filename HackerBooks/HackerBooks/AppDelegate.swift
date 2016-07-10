@@ -42,11 +42,10 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
                 
             }
             
-            
-            
             let model = Library(books: books, tags: tagSet)
             
             let libraryVC = LibraryTableViewController(model: model)
+            libraryVC.tableView.reloadData()
             let libraryNAV = UINavigationController(rootViewController: libraryVC)
             
             let bookVC = BookViewController(model: model.getBookAtIndexPath(NSIndexPath(forRow: 0, inSection: 1))!)

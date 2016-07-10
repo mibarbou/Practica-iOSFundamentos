@@ -137,7 +137,6 @@ class Library {
             
             d[t] = Set<Book>()
         }
-   
         return d
     }
     

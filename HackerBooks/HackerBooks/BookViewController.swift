@@ -80,23 +80,49 @@ class BookViewController: UIViewController, LibraryViewControllerDelegate{
     
     func markBookAsFavorite() {
         
-//        let defaults = NSUserDefaults.standardUserDefaults()
-//        
-//        let favoritesArray : NSMutableArray
-//        if let favorites = defaults.objectForKey(keyFavorites) as? NSArray {
-//            
-//            favoritesArray = favorites.mutableCopy() as! NSMutableArray
-//            
-//        } else {
-//            
-//            favoritesArray = NSMutableArray()
-//        }
-
         if model.isFavorite {
             model.isFavorite = false
         } else {
             model.isFavorite = true
         }
+        
+        let favoriteID = String(model.pdfURL).componentsSeparatedByString("/").last!
+        
+        let defaults = NSUserDefaults.standardUserDefaults()
+        
+        let favoritesArray : NSMutableArray
+        if let favorites = defaults.objectForKey(keyFavorites) as! NSArray! {
+            
+            favoritesArray = favorites.mutableCopy() as! NSMutableArray
+            
+            if !model.isFavorite {
+                
+                for i in 0...favoritesArray.count{
+                    
+                    if favoriteID == favoritesArray.objectAtIndex(i) as! String {
+                        
+                        favoritesArray.removeObjectAtIndex(i)
+                    }
+                }
+                
+            } else {
+                
+                favoritesArray.addObject(favoriteID)
+            }
+            
+            
+        } else {
+            favoritesArray = NSMutableArray()
+            
+            if model.isFavorite {
+                
+                favoritesArray.addObject(favoriteID)
+            }
+        }
+        
+        defaults.setObject(favoritesArray, forKey: keyFavorites)
+        defaults.synchronize()
+
     }
     
 
