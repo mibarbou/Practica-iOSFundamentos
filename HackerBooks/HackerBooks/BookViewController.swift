@@ -31,16 +31,14 @@ class BookViewController: UIViewController, LibraryViewControllerDelegate{
     
     override func viewDidLoad() {
         super.viewDidLoad()
-
-        // Do any additional setup after loading the view.
-        
-        syncModelWithView()
         
         let pdfButton = UIBarButtonItem(title: "PDF", style: .Done, target: self, action: #selector(BookViewController.goToPdfView))
         
         let favoriteButton = UIBarButtonItem(title: "Favorito", style: .Done, target: self, action: #selector(BookViewController.markBookAsFavorite))
         
         navigationItem.rightBarButtonItems = [pdfButton, favoriteButton]
+        
+        syncModelWithView()
     }
     
     override func viewWillAppear(animated: Bool) {
@@ -90,18 +88,18 @@ class BookViewController: UIViewController, LibraryViewControllerDelegate{
         
         let defaults = NSUserDefaults.standardUserDefaults()
         
-        let favoritesArray : NSMutableArray
+        let favoritesArray = NSMutableArray()
         if let favorites = defaults.objectForKey(keyFavorites) as! NSArray! {
             
-            favoritesArray = favorites.mutableCopy() as! NSMutableArray
+            let array = favorites.mutableCopy() as! NSMutableArray
             
             if !model.isFavorite {
                 
-                for i in 0..<favoritesArray.count{
+                for i in 0..<array.count {
                     
-                    if favoriteID == favoritesArray.objectAtIndex(i) as? String {
+                    if favoriteID != array.objectAtIndex(i) as? String {
                         
-                        favoritesArray.removeObjectAtIndex(i)
+                        favoritesArray.addObject(favoriteID)
                     }
                 }
                 
@@ -112,7 +110,6 @@ class BookViewController: UIViewController, LibraryViewControllerDelegate{
             
             
         } else {
-            favoritesArray = NSMutableArray()
             
             if model.isFavorite {
                 
