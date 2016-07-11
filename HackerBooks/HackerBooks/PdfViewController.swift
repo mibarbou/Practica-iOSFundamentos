@@ -37,6 +37,7 @@ class PdfViewController: UIViewController {
         
         let nc = NSNotificationCenter.defaultCenter()
         nc.addObserver(self, selector: #selector(bookDidChange), name: BookDidChangeNotification, object: nil)
+        nc.addObserver(self, selector: #selector(syncModelWithView), name: RersourceDidDownloadNotification, object: nil)
         
         syncModelWithView()
     }
@@ -71,20 +72,28 @@ class PdfViewController: UIViewController {
 
         activityIndicator.startAnimating()
         
-        dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0)) {
+        if let data = AsyncResource(resourceURL: model.pdfURL).data {
             
-            let pdfData = NSData(contentsOfURL: self.model.pdfURL)
+            self.activityIndicator.stopAnimating()
             
-            dispatch_async(dispatch_get_main_queue(), {
-                
-                if let data = pdfData {
-                    
-                    self.activityIndicator.stopAnimating()
-                    
-                    self.pdfView.loadData(data, MIMEType: "application/pdf", textEncodingName: "utf-8", baseURL: self.model.pdfURL)
-                }
-            })
+            self.pdfView.loadData(data, MIMEType: "application/pdf", textEncodingName: "utf-8", baseURL: self.model.pdfURL)
+            
         }
+        
+//        dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0)) {
+//            
+//            let pdfData = NSData(contentsOfURL: self.model.pdfURL)
+//            
+//            dispatch_async(dispatch_get_main_queue(), {
+//                
+//                if let data = pdfData {
+//                    
+//                    self.activityIndicator.stopAnimating()
+//                    
+//                    self.pdfView.loadData(data, MIMEType: "application/pdf", textEncodingName: "utf-8", baseURL: self.model.pdfURL)
+//                }
+//            })
+//        }
         
     }
 

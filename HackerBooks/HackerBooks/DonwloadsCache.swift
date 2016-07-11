@@ -37,7 +37,7 @@ class AsyncImage {
 
      func imageFor(url url: NSURL) {
 
-        let filePath = imagePathFor(url)
+        let filePath = localResourcePathFor(url)
         
         var error : NSError?
         let fileExists = filePath.checkResourceIsReachableAndReturnError(&error)
@@ -84,7 +84,7 @@ class AsyncImage {
                 
                 self.image = image
                 
-                let localImageUrl = self.imagePathFor(url)
+                let localImageUrl = self.localResourcePathFor(url)
                     
                 data.writeToURL(localImageUrl, atomically: true)
                 
@@ -97,7 +97,7 @@ class AsyncImage {
     }
     
     
-    func imagePathFor(url: NSURL) -> NSURL {
+    func localResourcePathFor(url: NSURL) -> NSURL {
         
         let fm = NSFileManager.defaultManager()
 
@@ -115,8 +115,97 @@ class AsyncImage {
     
 }
 
+let RersourceDidDownloadNotification = "Resource did download"
+
+let ResourceKey = "Resource key"
+
+class AsyncResource {
+    
+    var url : NSURL
+    
+    var data : NSData? {
+        
+        didSet{
+            
+            
+        }
+    }
+    
+    init(resourceURL url: NSURL) {
+        
+        self.url = url
+        
+        dataFor(url: self.url)
+    }
+    
+    func dataFor(url url: NSURL)  {
+        
+        let filePath = localResourcePathFor(url)
+        
+        var error : NSError?
+        let fileExists = filePath.checkResourceIsReachableAndReturnError(&error)
+        
+        if fileExists {
+            // tenemos el recurso cacheado en el directorio de documentos
+            
+            guard let data = NSData(contentsOfURL: filePath) else {
+                
+                return
+            }
+            
+            self.data = data
+            
+        } else {
+            // descargamos el recurso con la url remota
+            downloadResourceData(url)
+            
+        }
+    }
+    
+    func downloadResourceData(url: NSURL) {
+        
+        dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0)) {
+            
+            guard let theData = NSData(contentsOfURL: self.url) else {
+                
+                return
+            }
+            
+            dispatch_async(dispatch_get_main_queue(), {
+             
+                let localResourceUrl = localResourcePathFor(url)
+                
+                theData.writeToURL(localResourceUrl, atomically: true)
+                
+                let notif = NSNotificationCenter.defaultCenter()
+                notif.postNotificationName(RersourceDidDownloadNotification, object: self, userInfo: nil)
+                
+            })
+            
+            
+        }
+
+    }
+ 
+    
+}
 
 
+//MARK: - Helpers
 
-
+func localResourcePathFor(url: NSURL) -> NSURL {
+    
+    let fm = NSFileManager.defaultManager()
+    
+    let docsPath = fm.URLsForDirectory(NSSearchPathDirectory.DocumentDirectory, inDomains: NSSearchPathDomainMask.UserDomainMask).last!
+    
+    
+    let urlString =  url.absoluteString as NSString
+    
+    let resourceName = urlString.componentsSeparatedByString("/").last!
+    
+    let filePath = docsPath.URLByAppendingPathComponent(resourceName)
+    
+    return filePath
+}
 
