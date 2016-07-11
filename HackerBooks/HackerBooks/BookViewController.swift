@@ -13,6 +13,7 @@ class BookViewController: UIViewController, LibraryViewControllerDelegate{
 
     @IBOutlet weak var titleLabel: UILabel!
     @IBOutlet weak var authorsLabel: UILabel!
+    @IBOutlet weak var tagsLabel: UILabel!
     @IBOutlet weak var bookImageView: UIImageView!
     @IBOutlet weak var favoriteButton: UIButton!
     
@@ -125,6 +126,15 @@ class BookViewController: UIViewController, LibraryViewControllerDelegate{
         
         titleLabel.text = model.title
         authorsLabel.text = model.authors.joinWithSeparator(", ")
+        
+        let tagsArray = Array(model.tags)
+        var tagsNameArray = [String]()
+        for t in tagsArray {
+            
+            tagsNameArray.append(t.name)
+        }
+        tagsLabel.text = tagsNameArray.joinWithSeparator(" - ")
+        
         
         if model.isFavorite {
             
