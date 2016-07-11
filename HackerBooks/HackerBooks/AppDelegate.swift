@@ -48,7 +48,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
             libraryVC.tableView.reloadData()
             let libraryNAV = UINavigationController(rootViewController: libraryVC)
             
-            let bookVC = BookViewController(model: model.getBookAtIndexPath(NSIndexPath(forRow: 0, inSection: 1))!)
+            let bookVC = BookViewController(model: model.getBookAtIndexPath(NSIndexPath(forRow: 0, inSection: 0))!)
             let bookNAV = UINavigationController(rootViewController: bookVC)
             
             let splitVC = UISplitViewController()
@@ -60,6 +60,9 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
             
             
             window?.rootViewController = splitVC
+            
+            bookNAV.navigationItem.leftItemsSupplementBackButton = true
+            bookVC.navigationItem.leftBarButtonItem = splitVC.displayModeButtonItem()
  
             self.window!.backgroundColor = UIColor.whiteColor()
             self.window!.makeKeyAndVisible()
