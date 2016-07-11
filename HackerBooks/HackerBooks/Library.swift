@@ -44,7 +44,7 @@ class Library {
         
         self.books = books
         self.tags = tags
-        self.orderByTags = true
+        self.orderByTags = false
         
         putBooksByTags()
         

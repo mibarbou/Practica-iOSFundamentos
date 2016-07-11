@@ -10,6 +10,7 @@ import UIKit
 
 let BookDidChangeNotification = "Book did change"
 let BookKey = "Book key"
+let cellId = "BookCell"
 
 class LibraryTableViewController: UITableViewController, UISplitViewControllerDelegate {
     
@@ -34,6 +35,9 @@ class LibraryTableViewController: UITableViewController, UISplitViewControllerDe
         super.viewDidLoad()
         
         title = "Hackers Books"
+        
+        let nib = UINib(nibName: "BookTableViewCell", bundle: nil)
+        tableView.registerNib(nib, forCellReuseIdentifier: cellId)
         
         getSavedData()
 
@@ -149,22 +153,22 @@ class LibraryTableViewController: UITableViewController, UISplitViewControllerDe
     }
 
     override func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
-        
-        let cellId = "BookCell"
-        
-        var cell = tableView.dequeueReusableCellWithIdentifier(cellId)
+
+        var cell = tableView.dequeueReusableCellWithIdentifier(cellId) as? BookTableViewCell
         
         if cell == nil{
             // El optional está vacío: hay que crearla a pelo
-            cell = UITableViewCell(style: .Subtitle,
+            cell = BookTableViewCell(style: .Subtitle,
                                    reuseIdentifier: cellId)
         }
+        
+        cell?.accessoryType = UITableViewCellAccessoryType.DisclosureIndicator
 
         let book = model.getBookAtIndexPath(indexPath)!
-        
-        cell?.textLabel?.text = book.title
-        cell?.imageView?.image = AsyncImage(url: book.imageURL).image
-        cell?.detailTextLabel?.text = book.authors.joinWithSeparator(", ")
+   
+        cell?.titleLabel?.text = book.title
+        cell?.bookImageView?.image = AsyncImage(url: book.imageURL).image
+        cell?.authorsLabel?.text = book.authors.joinWithSeparator(", ")
 
         return cell!
     }
@@ -172,6 +176,11 @@ class LibraryTableViewController: UITableViewController, UISplitViewControllerDe
     override func tableView(tableView: UITableView, titleForHeaderInSection section: Int) -> String? {
         
         return model.getTagNameAtIndex(section)
+    }
+    
+    override func tableView(tableView: UITableView, estimatedHeightForRowAtIndexPath indexPath: NSIndexPath) -> CGFloat {
+        
+        return 70.0
     }
     
     //MARK: Table view delegate

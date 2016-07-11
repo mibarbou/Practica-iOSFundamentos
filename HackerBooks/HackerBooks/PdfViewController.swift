@@ -69,6 +69,8 @@ class PdfViewController: UIViewController {
     
 
     func syncModelWithView() {
+        
+        title = model.title
 
         activityIndicator.startAnimating()
         
