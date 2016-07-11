@@ -27,6 +27,12 @@ class Library {
         }
     }
     
+    var orderByTags : Bool {
+        didSet{
+            NSNotificationCenter.defaultCenter().postNotificationName(LibraryDidChangeNotification, object: self, userInfo: nil)
+        }
+    }
+    
     var tagsCount: Int{
         get{
             let count = self.tags.count
@@ -38,6 +44,7 @@ class Library {
         
         self.books = books
         self.tags = tags
+        self.orderByTags = true
         
         putBooksByTags()
         
@@ -56,6 +63,17 @@ class Library {
         putBooksByTags()
         
         NSNotificationCenter.defaultCenter().postNotificationName(LibraryDidChangeNotification, object: self, userInfo: nil)
+    }
+    
+    func sectionCount() -> Int {
+        
+        if !self.orderByTags {
+            
+            return 1
+        } else {
+            
+            return tagsCount
+        }
     }
     
     
@@ -99,13 +117,20 @@ class Library {
     
     func getBooksAtIndex(index: Int) -> [Book]? {
         
-        let tagsArray = getOrderedTagsArray()
+        if !orderByTags {
+            
+            return getBooksOrderedByTitle(self.books)
+            
+        } else {
         
-        guard let books = self.booksForTag(tagsArray[index]) else {
-            return nil
+            let tagsArray = getOrderedTagsArray()
+            
+            guard let books = self.booksForTag(tagsArray[index]) else {
+                return nil
+            }
+            
+            return getBooksOrderedByTitle(books)
         }
-        
-        return getBooksOrderedByTitle(books)
     }
     
     func getBookAtIndexPath(indexPath: NSIndexPath) -> Book? {
@@ -119,13 +144,21 @@ class Library {
     
     func getTagNameAtIndex(index: Int) -> String {
         
-        let tagsArray = getOrderedTagsArray()
-        
-        if tagsArray[index].name == "favorites" && bookCountForTag(Tag(name: "favorites")) == 0 {
+        if !orderByTags {
+            
             return ""
+            
+        } else {
+        
+            let tagsArray = getOrderedTagsArray()
+            
+            if tagsArray[index].name == "favorites" && bookCountForTag(Tag(name: "favorites")) == 0 {
+                return ""
+            }
+     
+            return (tagsArray[index].name).uppercaseString
+            
         }
- 
-        return (tagsArray[index].name).uppercaseString
     }
     
     //MARK: Utils

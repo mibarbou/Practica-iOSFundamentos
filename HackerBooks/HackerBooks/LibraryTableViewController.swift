@@ -11,12 +11,14 @@ import UIKit
 class LibraryTableViewController: UITableViewController, UISplitViewControllerDelegate {
     
     let model: Library
-    
+    var segmentedControl : UISegmentedControl?
     
     weak var delegate : LibraryViewControllerDelegate?
     
     init(model: Library){
         self.model = model
+        
+        segmentedControl = UISegmentedControl(items: ["ABC", "TAG"])
         
         super.init(nibName: nil, bundle: nil)
     }
@@ -29,7 +31,7 @@ class LibraryTableViewController: UITableViewController, UISplitViewControllerDe
         super.viewDidLoad()
         
         title = "Hackers Books"
-
+        
         getSavedData()
 
         // Uncomment the following line to preserve selection between presentations
@@ -41,6 +43,8 @@ class LibraryTableViewController: UITableViewController, UISplitViewControllerDe
     
     override func viewWillAppear(animated: Bool) {
         super.viewWillAppear(animated)
+        
+        drawSegmentedControl()
         
         let nc = NSNotificationCenter.defaultCenter()
         nc.addObserver(self, selector: #selector(reloadTable), name: ImageDidDownloadNotification, object: nil)
@@ -84,6 +88,40 @@ class LibraryTableViewController: UITableViewController, UISplitViewControllerDe
         // Dispose of any resources that can be recreated.
     }
     
+    //MARK: Segmented Control Methods
+    func segmentedControlTapped(sender: UISegmentedControl)  {
+        
+        switch sender.selectedSegmentIndex {
+        case 0:
+            model.orderByTags = false
+        default:
+            model.orderByTags = true
+        }
+    }
+    
+    func drawSegmentedControl()  {
+        
+        if let nav = navigationController?.navigationBar {
+            
+            if model.orderByTags {
+                
+                segmentedControl?.selectedSegmentIndex = 1
+                
+            } else {
+                
+                segmentedControl?.selectedSegmentIndex = 0
+            }
+            
+            segmentedControl!.frame = CGRect(x: nav.frame.size.width - 80, y: 5, width: 70, height: 30)
+            
+            segmentedControl?.addTarget(self, action: #selector(segmentedControlTapped), forControlEvents: .ValueChanged)
+            
+            
+            nav.addSubview(segmentedControl!)
+        }
+    }
+    
+    
     func reloadTable(notification: NSNotification)  {
         
         tableView.reloadData()
@@ -94,7 +132,7 @@ class LibraryTableViewController: UITableViewController, UISplitViewControllerDe
 
     override func numberOfSectionsInTableView(tableView: UITableView) -> Int {
    
-        return model.tagsCount
+        return model.sectionCount()
     }
 
     override func tableView(tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
