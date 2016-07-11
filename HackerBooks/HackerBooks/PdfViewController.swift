@@ -13,7 +13,7 @@ class PdfViewController: UIViewController {
     @IBOutlet weak var pdfView: UIWebView!
     @IBOutlet weak var activityIndicator: UIActivityIndicatorView!
     
-    let model: Book
+    var model: Book
     
     init(model: Book){
         self.model = model
@@ -35,12 +35,35 @@ class PdfViewController: UIViewController {
     override func viewWillAppear(animated: Bool) {
         super.viewWillAppear(animated)
         
+        let nc = NSNotificationCenter.defaultCenter()
+        nc.addObserver(self, selector: #selector(bookDidChange), name: BookDidChangeNotification, object: nil)
+        
         syncModelWithView()
+    }
+    
+    override func viewWillDisappear(animated: Bool) {
+        super.viewWillDisappear(animated)
+        
+        let nc = NSNotificationCenter.defaultCenter()
+        nc.removeObserver(self)
+        
     }
 
     override func didReceiveMemoryWarning() {
         super.didReceiveMemoryWarning()
         // Dispose of any resources that can be recreated.
+    }
+    
+    func bookDidChange(notification: NSNotification)  {
+        
+        let info = notification.userInfo!
+        
+        let book = info[BookKey] as? Book
+        
+        model = book!
+        
+        syncModelWithView()
+        
     }
     
 

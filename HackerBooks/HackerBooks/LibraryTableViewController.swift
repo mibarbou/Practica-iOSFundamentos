@@ -8,6 +8,9 @@
 
 import UIKit
 
+let BookDidChangeNotification = "Book did change"
+let BookKey = "Book key"
+
 class LibraryTableViewController: UITableViewController, UISplitViewControllerDelegate {
     
     let model: Library
@@ -191,10 +194,9 @@ class LibraryTableViewController: UITableViewController, UISplitViewControllerDe
             
         }
         
-//        let bookVC = BookViewController(model: book)
-//        
-//        navigationController?.pushViewController(bookVC, animated: true)
-        
+        let nc = NSNotificationCenter.defaultCenter()
+        let notif = NSNotification(name: BookDidChangeNotification, object: self, userInfo: [BookKey:book])
+        nc.postNotification(notif)
     }
     
     func splitViewController(splitViewController: UISplitViewController, collapseSecondaryViewController secondaryViewController: UIViewController, ontoPrimaryViewController primaryViewController: UIViewController) -> Bool {
