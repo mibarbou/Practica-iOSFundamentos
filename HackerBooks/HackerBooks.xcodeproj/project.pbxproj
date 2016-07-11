@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		D04D077B1D32BAFF002291A9 /* Properties.swift in Sources */ = {isa = PBXBuildFile; fileRef = D04D077A1D32BAFF002291A9 /* Properties.swift */; };
 		D0B741551D300B8A00E8C50E /* DonwloadsCache.swift in Sources */ = {isa = PBXBuildFile; fileRef = D0B741541D300B8A00E8C50E /* DonwloadsCache.swift */; };
 		D0E480B81D2C33DA00AE17E6 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = D0E480B71D2C33DA00AE17E6 /* AppDelegate.swift */; };
 		D0E480BA1D2C33DA00AE17E6 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = D0E480B91D2C33DA00AE17E6 /* Assets.xcassets */; };
@@ -24,6 +25,7 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		D04D077A1D32BAFF002291A9 /* Properties.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Properties.swift; sourceTree = "<group>"; };
 		D0B741541D300B8A00E8C50E /* DonwloadsCache.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DonwloadsCache.swift; sourceTree = "<group>"; };
 		D0E480B41D2C33DA00AE17E6 /* HackerBooks.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = HackerBooks.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		D0E480B71D2C33DA00AE17E6 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
@@ -72,6 +74,7 @@
 		D0E480B61D2C33DA00AE17E6 /* HackerBooks */ = {
 			isa = PBXGroup;
 			children = (
+				D04D077A1D32BAFF002291A9 /* Properties.swift */,
 				D0E480CA1D2C34B400AE17E6 /* Controllers */,
 				D0E480C91D2C349E00AE17E6 /* Models */,
 				D0E480B71D2C33DA00AE17E6 /* AppDelegate.swift */,
@@ -188,6 +191,7 @@
 				D0E480D51D2CFB2100AE17E6 /* BookViewController.swift in Sources */,
 				D0E480B81D2C33DA00AE17E6 /* AppDelegate.swift in Sources */,
 				D0E480DC1D2CFD3200AE17E6 /* Tag.swift in Sources */,
+				D04D077B1D32BAFF002291A9 /* Properties.swift in Sources */,
 				D0E480CC1D2C3E1100AE17E6 /* JSONProcessing.swift in Sources */,
 				D0E480C81D2C347F00AE17E6 /* Library.swift in Sources */,
 			);

@@ -8,13 +8,13 @@
 
 import UIKit
 
-let keyFavorites = "key favorites user defaults"
 
 class BookViewController: UIViewController, LibraryViewControllerDelegate{
 
     @IBOutlet weak var titleLabel: UILabel!
     @IBOutlet weak var authorsLabel: UILabel!
     @IBOutlet weak var bookImageView: UIImageView!
+    @IBOutlet weak var favoriteButton: UIButton!
     
     var model: Book
     
@@ -32,11 +32,9 @@ class BookViewController: UIViewController, LibraryViewControllerDelegate{
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        let pdfButton = UIBarButtonItem(title: "PDF", style: .Done, target: self, action: #selector(BookViewController.goToPdfView))
+        let pdfButton = UIBarButtonItem(title: "Ver PDF", style: .Done, target: self, action: #selector(BookViewController.goToPdfView))
         
-        let favoriteButton = UIBarButtonItem(title: "Favorito", style: .Done, target: self, action: #selector(BookViewController.markBookAsFavorite))
-        
-        navigationItem.rightBarButtonItems = [pdfButton, favoriteButton]
+        navigationItem.rightBarButtonItem = pdfButton
         
         syncModelWithView()
     }
@@ -46,6 +44,7 @@ class BookViewController: UIViewController, LibraryViewControllerDelegate{
         
         let nc = NSNotificationCenter.defaultCenter()
         nc.addObserver(self, selector: #selector(imageDidDownload), name: ImageDidDownloadNotification, object: nil)
+        nc.addObserver(self, selector: #selector(syncModelWithView), name: LibraryDidChangeNotification, object: nil)
    
     }
     
@@ -76,7 +75,7 @@ class BookViewController: UIViewController, LibraryViewControllerDelegate{
         
     }
     
-    func markBookAsFavorite() {
+    @IBAction func markOrUnmarkBookAsFavorite(sender: AnyObject) {
         
         if model.isFavorite {
             model.isFavorite = false
@@ -119,16 +118,26 @@ class BookViewController: UIViewController, LibraryViewControllerDelegate{
         
         defaults.setObject(favoritesArray, forKey: keyFavorites)
         defaults.synchronize()
-
+  
     }
-    
 
     func syncModelWithView() {
         
         titleLabel.text = model.title
         authorsLabel.text = model.authors.joinWithSeparator(", ")
         
+        if model.isFavorite {
+            
+            favoriteButton.setImage(UIImage(named: "favoriteOn"), forState: .Normal)
+            
+        } else {
+            
+            favoriteButton.setImage(UIImage(named: "favoriteOff"), forState: .Normal)
+        }
+        
         bookImageView.image = AsyncImage(url: model.imageURL).image
+        
+        
         
     }
     
