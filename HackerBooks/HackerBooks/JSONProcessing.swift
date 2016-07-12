@@ -57,25 +57,35 @@ func decode(book json: JSONDictionary?) throws -> Book{
 
 //MARK: - Loading
 func loadFrom(remoteURL url : String) throws -> JSONArray {
+    
     guard let url = NSURL(string: url),
         data = NSData(contentsOfURL: url) else {
+            
             throw HackerBooksError.jsonParsingError
     }
-    let obj = try NSJSONSerialization.JSONObjectWithData(data, options: NSJSONReadingOptions.MutableContainers)
     
-    if obj is JSONArray {
+    let object = try NSJSONSerialization.JSONObjectWithData(data, options: NSJSONReadingOptions.MutableContainers)
+    
+    if object is JSONArray {
+        
         guard let maybeArray = try? NSJSONSerialization.JSONObjectWithData(data, options: NSJSONReadingOptions.MutableContainers) as? JSONArray,
             array = maybeArray else {
+                
                 throw HackerBooksError.jsonParsingError
         }
         return array
-    } else if obj is JSONDictionary {
+        
+    } else if object is JSONDictionary {
+        
         guard let maybeDictionary = try? NSJSONSerialization.JSONObjectWithData(data, options: NSJSONReadingOptions.MutableContainers) as? JSONDictionary,
             dictionary = maybeDictionary else {
+                
                 throw HackerBooksError.jsonParsingError
         }
         return [dictionary]
+        
     } else {
+        
         throw HackerBooksError.jsonParsingError
     }
 }

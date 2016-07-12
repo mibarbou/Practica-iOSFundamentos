@@ -85,10 +85,13 @@ class LibraryTableViewController: UITableViewController, UISplitViewControllerDe
     override func viewWillDisappear(animated: Bool) {
         super.viewWillDisappear(animated)
         
+        segmentedControl?.removeFromSuperview()
+        
         let nc = NSNotificationCenter.defaultCenter()
         nc.removeObserver(self)
         
     }
+    
 
     override func didReceiveMemoryWarning() {
         super.didReceiveMemoryWarning()
@@ -189,23 +192,30 @@ class LibraryTableViewController: UITableViewController, UISplitViewControllerDe
         
         let book = model.getBookAtIndexPath(indexPath)!
         
-        delegate?.libraryViewController(self, didSelectCharacter: book)
-        
-        
-        if let bookVC = self.delegate as? BookViewController {
+        if (UIDevice.currentDevice().userInterfaceIdiom == .Phone) {
             
-//            splitViewController?.showDetailViewController(bookVC, sender: nil)
+            let bookVC = BookViewController(model: book)
+            navigationController?.pushViewController(bookVC, animated: true)
             
-            if let bookNAV = bookVC.navigationController {
+        } else {
+        
+            delegate?.libraryViewController(self, didSelectCharacter: book)
+            
+            if let bookVC = self.delegate as? BookViewController {
                 
-                splitViewController?.showDetailViewController(bookNAV, sender: nil)
+    //            splitViewController?.showDetailViewController(bookVC, sender: nil)
+                
+                if let bookNAV = bookVC.navigationController {
+                    
+                    splitViewController?.showDetailViewController(bookNAV, sender: nil)
+                }
+                
             }
             
+            let nc = NSNotificationCenter.defaultCenter()
+            let notif = NSNotification(name: BookDidChangeNotification, object: self, userInfo: [BookKey:book])
+            nc.postNotification(notif)
         }
-        
-        let nc = NSNotificationCenter.defaultCenter()
-        let notif = NSNotification(name: BookDidChangeNotification, object: self, userInfo: [BookKey:book])
-        nc.postNotification(notif)
     }
     
     func splitViewController(splitViewController: UISplitViewController, collapseSecondaryViewController secondaryViewController: UIViewController, ontoPrimaryViewController primaryViewController: UIViewController) -> Bool {

@@ -84,11 +84,11 @@ class BookViewController: UIViewController, LibraryViewControllerDelegate{
             model.isFavorite = true
         }
         
-        let favoriteID = String(model.pdfURL).componentsSeparatedByString("/").last!
+        let favoriteID = String(model.pdfURL).componentsSeparatedByString("/").last! as NSString
         
         let defaults = NSUserDefaults.standardUserDefaults()
         
-        let favoritesArray = NSMutableArray()
+        var favoritesArray = NSMutableArray()
         if let favorites = defaults.objectForKey(keyFavorites) as! NSArray! {
             
             let array = favorites.mutableCopy() as! NSMutableArray
@@ -97,13 +97,17 @@ class BookViewController: UIViewController, LibraryViewControllerDelegate{
                 
                 for i in 0..<array.count {
                     
-                    if favoriteID != array.objectAtIndex(i) as? String {
+                    let id = array.objectAtIndex(i) as! String
+                    
+                    if favoriteID != id {
                         
-                        favoritesArray.addObject(favoriteID)
+                        favoritesArray.addObject(id)
                     }
                 }
                 
             } else {
+                
+                favoritesArray = array
                 
                 favoritesArray.addObject(favoriteID)
             }
