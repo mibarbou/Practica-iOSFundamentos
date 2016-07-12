@@ -53,6 +53,8 @@ class LibraryTableViewController: UITableViewController, UISplitViewControllerDe
         
         drawSegmentedControl()
         
+        tableView.reloadData()
+        
         let nc = NSNotificationCenter.defaultCenter()
         nc.addObserver(self, selector: #selector(reloadTable), name: ImageDidDownloadNotification, object: nil)
         nc.addObserver(self, selector: #selector(reloadTable), name: LibraryDidChangeNotification, object: nil)
