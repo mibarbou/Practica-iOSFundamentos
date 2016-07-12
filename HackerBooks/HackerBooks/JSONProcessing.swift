@@ -56,19 +56,71 @@ func decode(book json: JSONDictionary?) throws -> Book{
 }
 
 //MARK: - Loading
+
+func loadFromLocal() -> NSData? {
+
+    let jsonPath = localJSONPath()
+    
+    var error : NSError?
+    let fileExists = jsonPath.checkResourceIsReachableAndReturnError(&error)
+    
+    if fileExists {
+        // tenemos el recurso cacheado en el directorio de documentos
+        
+        guard let data = NSData(contentsOfURL: jsonPath) else {
+            
+            return nil
+        }
+        
+        return data
+
+        
+    } else {
+        // descargamos el recurso con la url remota
+        return nil
+        
+    }
+}
+
+func localJSONPath() -> NSURL {
+    
+    let jsonResource = "HackerBooks.json"
+    
+    let fm = NSFileManager.defaultManager()
+    
+    let docsPath = fm.URLsForDirectory(NSSearchPathDirectory.DocumentDirectory, inDomains: NSSearchPathDomainMask.UserDomainMask).last!
+    
+    let filePath = docsPath.URLByAppendingPathComponent(jsonResource)
+    
+    return filePath
+}
+
 func loadFrom(remoteURL url : String) throws -> JSONArray {
     
-    guard let url = NSURL(string: url),
-        data = NSData(contentsOfURL: url) else {
-            
-            throw HackerBooksError.jsonParsingError
+    var obtainedData = NSData()
+    if let theData = loadFromLocal(){
+        
+        obtainedData = theData
+        
+    } else {
+        guard let url = NSURL(string: url),
+            data = NSData(contentsOfURL: url) else {
+                
+                throw HackerBooksError.jsonParsingError
+        }
+
+        obtainedData = data
+        
+        let jsonPath = localJSONPath()
+        
+        obtainedData.writeToURL(jsonPath, atomically: true)
     }
     
-    let object = try NSJSONSerialization.JSONObjectWithData(data, options: NSJSONReadingOptions.MutableContainers)
+    let object = try NSJSONSerialization.JSONObjectWithData(obtainedData, options: NSJSONReadingOptions.MutableContainers)
     
     if object is JSONArray {
         
-        guard let maybeArray = try? NSJSONSerialization.JSONObjectWithData(data, options: NSJSONReadingOptions.MutableContainers) as? JSONArray,
+        guard let maybeArray = try? NSJSONSerialization.JSONObjectWithData(obtainedData, options: NSJSONReadingOptions.MutableContainers) as? JSONArray,
             array = maybeArray else {
                 
                 throw HackerBooksError.jsonParsingError
@@ -77,7 +129,7 @@ func loadFrom(remoteURL url : String) throws -> JSONArray {
         
     } else if object is JSONDictionary {
         
-        guard let maybeDictionary = try? NSJSONSerialization.JSONObjectWithData(data, options: NSJSONReadingOptions.MutableContainers) as? JSONDictionary,
+        guard let maybeDictionary = try? NSJSONSerialization.JSONObjectWithData(obtainedData, options: NSJSONReadingOptions.MutableContainers) as? JSONDictionary,
             dictionary = maybeDictionary else {
                 
                 throw HackerBooksError.jsonParsingError
