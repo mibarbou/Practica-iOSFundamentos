@@ -96,10 +96,6 @@ class Library {
         return Array(booksSet)
     }
     
-//    func bookAtIndex(index: Int) -> Book? {
-//        
-//        return Book()
-//    }
     
     
     func bookHasTag(tag: Tag, inTags tags: [Tag]) -> Bool {
@@ -161,7 +157,7 @@ class Library {
         }
     }
     
-    //MARK: Utils
+    //MARK: - Helpers
     func makeEmptyTagsDictionary() -> LibraryDictionary {
         
         var d = LibraryDictionary()

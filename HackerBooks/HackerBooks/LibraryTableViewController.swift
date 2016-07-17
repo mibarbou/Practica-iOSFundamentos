@@ -89,6 +89,11 @@ class LibraryTableViewController: UITableViewController, UISplitViewControllerDe
         
         segmentedControl?.removeFromSuperview()
         
+        
+    }
+    
+    deinit{
+        
         let nc = NSNotificationCenter.defaultCenter()
         nc.removeObserver(self)
         
